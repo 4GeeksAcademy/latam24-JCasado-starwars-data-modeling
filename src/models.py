@@ -7,8 +7,8 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class user(Base):
-    __tablename__ = 'person'
+class User(Base):
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
     Name = Column(String(250), nullable=False)
@@ -26,27 +26,11 @@ class Address(Base):
     street_name = Column(String(250))
     street_number = Column(String(250))
     post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
-
-class Favorites(Base):
-    _tablename_ = 'favorites'
-
-    id = Column(Integer, primary_key=true)
-    Spaceships_id = relationship("Spaceships", back_populates="favorites")
-    Spaceships = relationship( "Spaceships", back_populates="favorites")
-
-    Planets_id = Column(ForeignKey("planets.id"))
-    Planets = relationship( "Planets", back_populates="favorites")
-
-    Characters_id = Column(ForeignKey("characters.id"))
-    Characters = relationship( "Characters", back_populates="favorites")
-
-    Favorites_id = Column(ForeignKey("user.id"))
-    Favorites = relationship( "user", back_populates="favorites")
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
 
 class Starships(Base):
-    _tablename_ = 'Starships'
+    __tablename__ = 'starships'
 
     id = Column(Integer, primary_key=True)
     full_name = Column(String(250))
@@ -80,6 +64,22 @@ class Characters(Base):
     birth_year = Column(String(250), nullable=False)
     characters_id = Column(Integer, ForeignKey('favorites'))
     favorites = relationship ("Favorites", back_populates =  "characters")
+
+class Favorites(Base):
+    __tablename__ = 'favorites'
+
+    id = Column(Integer, primary_key=True)
+    Spaceships_id = relationship("Spaceships", back_populates="favorites")
+    Spaceships = relationship( "Spaceships", back_populates="favorites")
+
+    Planets_id = Column(ForeignKey("planets.id"))
+    Planets = relationship( "Planets", back_populates="favorites")
+
+    Characters_id = Column(ForeignKey("characters.id"))
+    Characters = relationship( "Characters", back_populates="favorites")
+
+    Favorites_id = Column(ForeignKey("user.id"))
+    Favorites = relationship( "user", back_populates="favorites")
 
     def to_dict(self):
         return {}
